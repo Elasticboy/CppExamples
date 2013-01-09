@@ -5,6 +5,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "12_OpenGL", "12_OpenGL\12_O
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "10_AudioFmod", "10_AudioFmod\10_AudioFmod.vcxproj", "{FBBA23AC-7C8B-4EF1-B66B-0CA9EAB2062E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "11_SDL", "11_SDL\11_SDL.vcxproj", "{C3E1B30D-5DC0-43AE-86F7-8064C23DE578}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13_SFML", "13_SFML\13_SFML.vcxproj", "{CF8588B9-ACB2-4B25-BD6D-3E566B4DD0E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +23,14 @@ Global
 		{FBBA23AC-7C8B-4EF1-B66B-0CA9EAB2062E}.Debug|Win32.Build.0 = Debug|Win32
 		{FBBA23AC-7C8B-4EF1-B66B-0CA9EAB2062E}.Release|Win32.ActiveCfg = Release|Win32
 		{FBBA23AC-7C8B-4EF1-B66B-0CA9EAB2062E}.Release|Win32.Build.0 = Release|Win32
+		{C3E1B30D-5DC0-43AE-86F7-8064C23DE578}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C3E1B30D-5DC0-43AE-86F7-8064C23DE578}.Debug|Win32.Build.0 = Debug|Win32
+		{C3E1B30D-5DC0-43AE-86F7-8064C23DE578}.Release|Win32.ActiveCfg = Release|Win32
+		{C3E1B30D-5DC0-43AE-86F7-8064C23DE578}.Release|Win32.Build.0 = Release|Win32
+		{CF8588B9-ACB2-4B25-BD6D-3E566B4DD0E3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF8588B9-ACB2-4B25-BD6D-3E566B4DD0E3}.Debug|Win32.Build.0 = Debug|Win32
+		{CF8588B9-ACB2-4B25-BD6D-3E566B4DD0E3}.Release|Win32.ActiveCfg = Release|Win32
+		{CF8588B9-ACB2-4B25-BD6D-3E566B4DD0E3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
