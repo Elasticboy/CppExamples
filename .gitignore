@@ -1,0 +1,9 @@
+Debug
+Release
+include
+ipch
+*.suo
+*.sdf
+*.opensdf
+*.user
+*.filters
