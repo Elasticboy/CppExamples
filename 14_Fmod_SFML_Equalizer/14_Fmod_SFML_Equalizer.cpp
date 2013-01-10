@@ -16,6 +16,7 @@ int g_sceenHeight;
 int g_padding;
 float g_pas;
 float g_pipeWidth;
+int g_right;
 int g_bottom;
 float g_coef;
 float g_freq;
@@ -68,9 +69,10 @@ void initParams(int argc, char** argv) {
 		std::cout << "!!! g_pipeWidth < 1" << std::endl;
 		g_pipeWidth = 1;
 	}
-
-	g_bottom			= g_sceenHeight - g_padding;
-	g_freq				= 0.025f;
+	
+	g_right		= g_sceenWidth - g_padding;
+	g_bottom	= g_sceenHeight - g_padding;
+	g_freq		= 0.025f;
 	
 	std::cout << "Running Config : " << std::endl;
 	std::cout << " - Screen	: " << g_sceenWidth << "x" << g_sceenHeight << std::endl;
@@ -184,6 +186,9 @@ void drawSpectrum(sf::RenderWindow* window, float spectrum[])
 			y2 = g_padding;
 		}
 
+		if (x1 + g_pas > g_right) {
+			break;
+		}
 		//std::cout << value << " | ";
 		window->Draw(sf::Shape::Rectangle(x1, g_bottom, x2, y2, sf::Color::Green));
 		x1 += g_pas;
