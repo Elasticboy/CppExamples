@@ -4,10 +4,10 @@
 #include "stdafx.h"
 #include "SDL.h"
 
-int main()
+int wmain(int argc, char* argv[])
 {
-	int SDL_Init(SDL_INIT_VIDEO);
-
+	int res = SDL_Init(SDL_INIT_VIDEO);
+	SDL_Quit();
 	return 0;
 }
 
