@@ -18,35 +18,41 @@ float g_pas;
 float g_pipeWidth;
 int g_right;
 int g_bottom;
-float g_coef;
+float g_coefInput;
 float g_freq;
 
 // Prototypes
 void checkFmodResult(FMOD_RESULT result);
 void drawSpectrum(sf::RenderWindow* window, float spectrum[]);
+float displayedSpectrumValue(float spectrumValue, int position);
 //void initParams(int argc, char** argv);
 
+/**
+ * Initiate all the variables the programme.
+ */
 void initParams(int argc, char** argv) {
 	g_sceenWidth		= 1200;
 	g_sceenHeight		= 800;
 
 	g_sampleBegin		= (argc >= 2) ? std::stoi(argv[1]) : 0;
 	if (g_sampleBegin >= g_spectrumSize) {
-		std::cout << "!!! g_sampleBegin >= g_spectrumSize" << std::endl;
+		std::cout << "WARNING : g_sampleBegin >= g_spectrumSize" << std::endl;
 		g_sampleBegin = 0;
 	}
 
 	g_sampleEnd			= (argc >= 3) ? std::stoi(argv[2]) : g_spectrumSize - 1;
 	if (g_sampleEnd >= g_spectrumSize || g_sampleEnd <= g_sampleBegin) {
-		std::cout << "!!! g_sampleEnd >= g_spectrumSize || g_sampleEnd <= g_sampleBegin" << std::endl;
+		std::cout << "WARNING : g_sampleEnd >= g_spectrumSize || g_sampleEnd <= g_sampleBegin" << std::endl;
 		g_sampleEnd = g_spectrumSize - 1;
 	}
-
 	
-	g_coef				= (argc >= 4) ? std::stof(argv[3]) : 5000;
-	if (g_coef < 0 || g_coef > 100000) {
-		std::cout << "!!! g_coef < 0 || g_coef > 50000" << std::endl;
-		g_coef = 5000;
+	const float g_coefInputMin		= 0.0f;
+	const float g_coefInputMax		= 100000.0f;
+	const float g_coefInputDefault	= 50000.0f;
+	g_coefInput				= (argc >= 4) ? std::stof(argv[3]) : g_coefInputDefault;
+	if (g_coefInput < g_coefInputMin || g_coefInput > g_coefInputMax) {
+		std::cout << "WARNING : g_coefInput < g_coefInputMin || g_coefInput > g_coefInputMax" << std::endl;
+		g_coefInput = g_coefInputDefault;
 	}
 
 	// Padding from the edge of the screen
@@ -57,7 +63,7 @@ void initParams(int argc, char** argv) {
 		g_pas += 0.4f;
 	}
 	if (g_pas < 1) {
-		std::cout << "!!! g_pas < 1" << std::endl;
+		std::cout << "WARNING : g_pas < 1" << std::endl;
 		g_pas = 1;
 	}
 	// The width of a pipe if 90% of the width of the pas
@@ -66,7 +72,7 @@ void initParams(int argc, char** argv) {
 		g_pipeWidth += 0.4f;
 	}
 	if (g_pipeWidth < 1) {
-		std::cout << "!!! g_pipeWidth < 1" << std::endl;
+		std::cout << "WARNING : g_pipeWidth < 1" << std::endl;
 		g_pipeWidth = 1;
 	}
 	
@@ -83,7 +89,7 @@ void initParams(int argc, char** argv) {
 	std::cout << " - Pas		: " << g_pas			<< std::endl;
 	std::cout << " - PipeWidth	: " << g_pipeWidth		<< std::endl;
 	std::cout << " - Bottom	: " << g_bottom << std::endl;
-	std::cout << " - Coef		: " << g_coef << std::endl;
+	std::cout << " - Coef		: " << g_coefInput << std::endl;
 	std::cout << " - Freq		: " << g_freq << std::endl;
 }
 
@@ -173,14 +179,18 @@ void checkFmodResult(FMOD_RESULT result)
 	}
 }
 
+/**
+ * Draw the acoustic spectrum in the window.
+ * @param window The window to draw in.
+ * @param spectrum A table containing the acoustic sperctum values.
+ */
 void drawSpectrum(sf::RenderWindow* window, float spectrum[])
 {
-	const float reduceCoef = (float)g_spectrumSize / 20.0f;
 	int x1 = g_padding;
 	for (int current = g_sampleBegin; current < g_sampleEnd; current++) {
 		int x2 = x1 + g_pipeWidth;
-
-		float value = spectrum[current] * g_coef * ((float) current/reduceCoef + 1);
+		
+		float value = displayedSpectrumValue(spectrum[current], current);
 		int y2 = g_bottom - value;
 		if (y2 < g_padding) {
 			y2 = g_padding;
@@ -194,4 +204,21 @@ void drawSpectrum(sf::RenderWindow* window, float spectrum[])
 		x1 += g_pas;
 	}
 	//std::cout << std::endl << std::endl;
+}
+
+/**
+ * This method get the value returned by fmod and transforms it
+ * to get an corret value to display.
+ */
+float displayedSpectrumValue(float spectrumValue, int position) {
+	if (position == 0) { 
+		position = 1; // Avoid multiplication by zero
+	}
+	const float reductionCoef = 1.0f/(float) g_spectrumSize * (float)position + 2;
+	// if position == 1 => => returned value = spectrumValue * 2
+	// if position == g_spectrumSize (max) => returned value = spectrumValue * g_coefInput * 2
+
+	const float finalCoef = g_coefInput * reductionCoef;
+	
+	return spectrumValue * finalCoef;
 }
