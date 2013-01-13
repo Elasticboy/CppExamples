@@ -6,7 +6,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-void draw(sf::RenderWindow* window);
+void drawRandom(sf::RenderWindow& window);
 
 int main()
 {
@@ -24,10 +24,11 @@ int main()
                 window.Close();
         }
 
-        window.Clear(); // Fill with black
+		window.Clear(sf::Color::White); // Fill with black
 
-		draw(&window);
-
+		drawRandom(window);
+		window.Draw(sf::Shape::Rectangle(50, 50, 150, 150, sf::Color::Green));
+		window.Draw(sf::Shape::Rectangle(150, 300, 50, 200, sf::Color::Blue));
         window.Display(); // Refresh the window
     }
 
@@ -35,7 +36,7 @@ int main()
 }
 
 
-void draw(sf::RenderWindow* window)
+void drawRandom(sf::RenderWindow& window)
 {
 	const int bottom = 790;
 
@@ -43,12 +44,11 @@ void draw(sf::RenderWindow* window)
 	const int pipeWidth = 8;
 	const int pas = 10;
 	
-
 	for (int i = 0; i < length; i++) {
 		int x1 = i * pas;
 		int x2 = x1 + pipeWidth;
 		int spectrumValue = bottom - sf::Randomizer::Random(0, i*10);
 
-		window->Draw(sf::Shape::Rectangle(x1, bottom, x2, spectrumValue, sf::Color::Green));
+		window.Draw(sf::Shape::Rectangle(x1, bottom, x2, spectrumValue, sf::Color::Green));
 	}
 }
