@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <fmod.hpp>
+#include <fmod_errors.h>
 #include <iostream>
 #include <string>
 
@@ -38,6 +39,12 @@ const string CENTER		= "CENTER";
 const string STEREO		= "STEREO";
 const string CENTER_STEREO = "CENTER_STEREO";
 
+const int STEREO_LEFT	= 0;
+int STEREO_RIGHT		= 1;
+
+FMOD_DSP_FFT_WINDOW g_modeAlgo;
+sf::Color g_modeColor;
+
 // Screen Size
 Rectf g_screenRect;
 
@@ -59,12 +66,13 @@ float g_freq;
 
 // Prototypes
 void initParams(int argc, char** argv);
-void checkFmodResult(FMOD_RESULT result);
+void checkFmodResult(FMOD_RESULT result, const string& source);
 void correctRangeX(Rectf rect, float &value);
 void correctRangeY(Rectf rect, float &value);
-void computeAndDrawSpectrum(sf::RenderWindow& window, sf::Clock clock, FMOD::Channel *channel);
+void computeAndDrawSpectrum(sf::RenderWindow& window, sf::Clock& clock, FMOD::Channel *channel);
 void drawSpectrum(sf::RenderWindow& window, float spectrum[], Pointf startingPoint, bool centerX, bool reverse);
 float displayedSpectrumValue(float spectrumValue, int position);
+void setNextMode(sf::Clock& clock);
 
 int main(int argc, char** argv)
 {
@@ -75,17 +83,25 @@ int main(int argc, char** argv)
 
 	FMOD::System* system	= nullptr;
 	result = System_Create(&system);
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
+
+	FMOD_SPEAKERMODE  speakermode;
+	result = system->getDriverCaps(0, 0, 0, &speakermode);
+    checkFmodResult(result, "main");
+
+    result = system->setSpeakerMode(speakermode);
+    checkFmodResult(result, "main");
+
 	result = system->init(2, FMOD_INIT_NORMAL, nullptr);
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
 
 	FMOD::Sound* music		= nullptr;
 	result = system->createSound("music.mp3", FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, nullptr, &music);
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
 
 	FMOD::Channel* channel	= nullptr;
 	result = system->getChannel(0, &channel);
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
 
 	//////////////////////////////////
 	// Init SFML
@@ -94,51 +110,65 @@ int main(int argc, char** argv)
 	
 	///////////////////////////////////
 	sf::Clock clock;
-	
+	sf::Clock changeModeClock;
+
 	// Main loop
 	while (window.IsOpened()) {
 
 		bool isPlaying;
 		channel->isPlaying(&isPlaying);
 
-		if (!isPlaying) {
+		if (!isPlaying) { // Play the sound if not playing
 			result = system->playSound(FMOD_CHANNEL_REUSE, music, false, &channel);
-			checkFmodResult(result);
+			checkFmodResult(result, "main (system->playSound)");
+
+			int channels;
+			music->getFormat(nullptr, nullptr, &channels, nullptr);
+			if (channels < 2) { // duplicate mono sound if only one channel is available
+				STEREO_RIGHT = STEREO_LEFT;
+			}
+
+			result = channel->setSpeakerMix(1.0, 1.0, 1.0f, 0, 0, 0, 0, 0);
+			checkFmodResult(result, "main (channel->setSpeakerMix)");
 		}
 
+		// Check for events
         sf::Event event;
         while (window.GetEvent(event)) {
 
             if (event.Type == sf::Event::Closed) {
+				// Close button to stop the programm
                 window.Close();
+
 			} else if (event.Type == sf::Event::KeyPressed) {
+				// Pause/resume if any key is pressed
 				bool isPaused;
 				channel->getPaused(&isPaused);
 				channel->setPaused(!isPaused);
 			}
         }
-		
+
+		bool isPaused;
 		channel->isPlaying(&isPlaying);
-
-		if (!isPlaying) {
-			result = system->playSound(FMOD_CHANNEL_REUSE, music, false, &channel);
-			checkFmodResult(result);
-		}
-
-		if (isPlaying) {
+		channel->getPaused(&isPaused);
+		if (isPlaying && !isPaused) {
+			// Change mode every 5 seconds
+			if (changeModeClock.GetElapsedTime() > 5) {
+				setNextMode(changeModeClock);
+			}
 			computeAndDrawSpectrum(window, clock, channel);
 		}
     }
 
 	// Release resources
 	result = music->release();
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
 
 	result = system->close();
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
 
 	result = system->release();
-	checkFmodResult(result);
+	checkFmodResult(result, "main");
     return EXIT_SUCCESS;
 }
 
@@ -166,7 +196,7 @@ void initParams(int argc, char** argv)
 	
 	// *** Arg 0 => Programme name
 	// *** Arg 1 => Render
-	string displayType = (argc > 1) ? argv[1] : NORMAL;
+	string displayType = (argc > 1) ? argv[1] : CENTER_STEREO;
 	if (displayType == CENTER) {
 		g_spectrumType = CENTER;
 
@@ -198,9 +228,9 @@ void initParams(int argc, char** argv)
 	}
 	
 	// *** Arg 4 => Coef
-	const float g_coefInputMin		= 0.0f;
+	const float g_coefInputMin		= 1.0f;
 	const float g_coefInputMax		= 100000.0f;
-	const float g_coefInputDefault	= 10000.0f;
+	const float g_coefInputDefault	= 100.0f;
 	g_coefInput = (argc > 4) ? stof(argv[4]) : g_coefInputDefault;
 	if (g_coefInput < g_coefInputMin || g_coefInput > g_coefInputMax) {
 		cout << "WARNING : g_coefInput < g_coefInputMin || g_coefInput > g_coefInputMax" << endl;
@@ -231,6 +261,9 @@ void initParams(int argc, char** argv)
 
 	g_freq = 0.025f;
 	
+	g_modeAlgo = FMOD_DSP_FFT_WINDOW_RECT;
+	g_modeColor = sf::Color::Red;
+	
 	// Display config
 	cout << endl;
 	cout << "Running Config : " << endl << endl;
@@ -252,10 +285,11 @@ void initParams(int argc, char** argv)
 	cout << " - Freq			: " << g_freq << endl;
 }
 
-void checkFmodResult(FMOD_RESULT result)
+void checkFmodResult(FMOD_RESULT result, const string& source)
 {
 	if (result != FMOD_RESULT::FMOD_OK) {
-		cerr << "Error : " << result << endl;
+		cerr << "Error in the function " << source << " : " << FMOD_ErrorString(result) << endl;
+		system("PAUSE");
 	}
 }
 
@@ -308,54 +342,59 @@ bool correctRangeY(Rectf rect, int value)
 	return false; // no correction done
 }
 
-void computeAndDrawSpectrum(sf::RenderWindow& window, sf::Clock clock, FMOD::Channel *channel)
+void computeAndDrawSpectrum(sf::RenderWindow& window, sf::Clock& clock, FMOD::Channel *channel)
 {
-	if (clock.GetElapsedTime() > g_freq) {
-		float spectrum[g_spectrumSize];
-		FMOD_RESULT result = channel->getSpectrum(spectrum, g_spectrumSize, 0, FMOD_DSP_FFT_WINDOW_RECT);
-		checkFmodResult(result);
-		clock.Reset();
-
-		window.Clear(); // Fill with black
-
-		if (g_spectrumType == NORMAL) {
-			Pointf point;
-			point.x = g_drawingRect.left;	// Starting from the left of the drawing rect.
-			point.y = g_drawingRect.bottom;	// Starting from the bottom of the drawing rect.
-			drawSpectrum(window, spectrum, point, false, false);
-			
-		} else if (g_spectrumType == REVERSE) {
-			Pointf point;
-			point.x = g_drawingRect.right;	// Starting from the right of the drawing rect.
-			point.y = g_drawingRect.bottom;	// Starting from the bottom of the drawing rect.
-			drawSpectrum(window, spectrum, point, false, true);
-
-		} else if (g_spectrumType == CENTER) {
-			Pointf point;
-			point.x = g_drawingRect.left;	// Starting from the left of the drawing rect.
-			point.y = g_drawingRect.centerY();	// Starting from the bottom of the drawing rect.
-			drawSpectrum(window, spectrum, point, true, false);
-
-		} else if (g_spectrumType == STEREO) {
-			Pointf point;
-			point.x = g_drawingRect.centerX(); // Starting from the center of the drawing rect.
-			point.y = g_drawingRect.bottom;
-			drawSpectrum(window, spectrum, point, false, false);
-			drawSpectrum(window, spectrum, point, false, true);
-
-		} else if (g_spectrumType == CENTER_STEREO) {
-			Pointf point = g_drawingRect.center(); // Starting from the center of the drawing rect.
-			drawSpectrum(window, spectrum, point, true, false);
-			drawSpectrum(window, spectrum, point, true, true);
-		}
-
-		window.Display(); // Refresh the window
-
-		//cout << endl;
-	} else {
-		// need regulation
-		//cout << "can make it smoother : " << clock.GetElapsedTime() * 1000.0f << " ms" << endl;
+	if (clock.GetElapsedTime() < g_freq) {
+		// getSpectrum refreshes only every 25 ms. No need to redraw if the spectrum hasn't changed.
+		return;
 	}
+
+	float spectrumLeft[g_spectrumSize];
+	FMOD_RESULT result = channel->getSpectrum(spectrumLeft, g_spectrumSize, STEREO_LEFT, g_modeAlgo);
+	checkFmodResult(result, "computeAndDrawSpectrum (channel->getSpectrum() LEFT)");
+
+	float spectrumRight[g_spectrumSize];
+	if (g_spectrumType == STEREO || g_spectrumType == CENTER_STEREO) {
+		FMOD_RESULT result = channel->getSpectrum(spectrumRight, g_spectrumSize, STEREO_RIGHT, g_modeAlgo);
+		checkFmodResult(result, "computeAndDrawSpectrum (channel->getSpectrum() RIGHT)");
+	}
+
+	clock.Reset();
+
+	window.Clear(); // Fill with black
+
+	if (g_spectrumType == NORMAL) {
+		Pointf point;
+		point.x = g_drawingRect.left;	// Starting from the left of the drawing rect.
+		point.y = g_drawingRect.bottom;	// Starting from the bottom of the drawing rect.
+		drawSpectrum(window, spectrumLeft, point, false, false);
+			
+	} else if (g_spectrumType == REVERSE) {
+		Pointf point;
+		point.x = g_drawingRect.right;	// Starting from the right of the drawing rect.
+		point.y = g_drawingRect.bottom;	// Starting from the bottom of the drawing rect.
+		drawSpectrum(window, spectrumLeft, point, false, true);
+
+	} else if (g_spectrumType == CENTER) {
+		Pointf point;
+		point.x = g_drawingRect.left;	// Starting from the left of the drawing rect.
+		point.y = g_drawingRect.centerY();	// Starting from the bottom of the drawing rect.
+		drawSpectrum(window, spectrumLeft, point, true, false);
+
+	} else if (g_spectrumType == STEREO) {
+		Pointf point;
+		point.x = g_drawingRect.centerX(); // Starting from the center of the drawing rect.
+		point.y = g_drawingRect.bottom;
+		drawSpectrum(window, spectrumRight, point, false, false);
+		drawSpectrum(window, spectrumLeft, point, false, true);
+
+	} else if (g_spectrumType == CENTER_STEREO) {
+		Pointf point = g_drawingRect.center(); // Starting from the center of the drawing rect.
+		drawSpectrum(window, spectrumRight, point, true, false);
+		drawSpectrum(window, spectrumLeft, point, true, true);
+	}
+
+	window.Display(); // Refresh the window
 }
 
 /**
@@ -389,7 +428,7 @@ void drawSpectrum(sf::RenderWindow& window, float spectrum[], Pointf startingPoi
 			correctRangeY(g_drawingRect, y2);
 		}
 
-		window.Draw(sf::Shape::Rectangle(x1, y1, x2, y2, sf::Color::Green));
+		window.Draw(sf::Shape::Rectangle(x1, y1, x2, y2, g_modeColor));
 		if (reverse) { x1 -= g_step; } else { x1 += g_step; }
 
 		// Break if the next step is out of the drawing rectangle
@@ -410,12 +449,50 @@ float displayedSpectrumValue(float spectrumValue, int position)
 	const float reductionCoef = (float) position / (float) g_spectrumSize;
 
 	float finalCoef = g_coefInput * reductionCoef;
-	if (finalCoef == 0) {
+	if (finalCoef < 1) {
 		finalCoef = 1;
 	}
 
 	// if position == 0		=> returned value = spectrumValue * 4
 	// if position == max/2	=> returned value = spectrumValue * g_coefInput/2 * 4
 	// if position == max	=> returned value = spectrumValue * g_coefInput * 4
-	return spectrumValue * finalCoef * 4;
+	return spectrumValue * finalCoef * 2000;
+	//return spectrumValue * 10000;
+}
+
+void setNextMode(sf::Clock& clock) {
+	if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_BLACKMAN) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_BLACKMANHARRIS;
+		g_modeColor = sf::Color::Blue;
+
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_BLACKMANHARRIS) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_FORCEINT;
+		g_modeColor = sf::Color::Green;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_FORCEINT) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_HAMMING;
+		g_modeColor = sf::Color::Cyan;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_HAMMING) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_HANNING;
+		g_modeColor = sf::Color::Magenta;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_HANNING) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_MAX;
+		g_modeColor = sf::Color::Magenta;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_MAX) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_RECT;
+		g_modeColor = sf::Color::Red;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_RECT) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_TRIANGLE;
+		g_modeColor = sf::Color::Yellow;
+	
+	} else if (g_modeAlgo == FMOD_DSP_FFT_WINDOW_TRIANGLE) {
+		g_modeAlgo = FMOD_DSP_FFT_WINDOW_BLACKMAN;
+		g_modeColor = sf::Color::White;
+	
+	}
+	clock.Reset();
 }

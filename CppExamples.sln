@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13_SFML", "13_SFML\13_SFML.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "14_Fmod_SFML_Equalizer", "14_Fmod_SFML_Equalizer\14_Fmod_SFML_Equalizer.vcxproj", "{87C57FAB-1D37-4CCE-B88D-B8ED766E37B8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_MsSpeechApi", "05_MsSpeechApi\05_MsSpeechApi.vcxproj", "{386C737D-8DB5-4A18-8C61-E70454094F22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -37,6 +39,10 @@ Global
 		{87C57FAB-1D37-4CCE-B88D-B8ED766E37B8}.Debug|Win32.Build.0 = Debug|Win32
 		{87C57FAB-1D37-4CCE-B88D-B8ED766E37B8}.Release|Win32.ActiveCfg = Release|Win32
 		{87C57FAB-1D37-4CCE-B88D-B8ED766E37B8}.Release|Win32.Build.0 = Release|Win32
+		{386C737D-8DB5-4A18-8C61-E70454094F22}.Debug|Win32.ActiveCfg = Debug|Win32
+		{386C737D-8DB5-4A18-8C61-E70454094F22}.Debug|Win32.Build.0 = Debug|Win32
+		{386C737D-8DB5-4A18-8C61-E70454094F22}.Release|Win32.ActiveCfg = Release|Win32
+		{386C737D-8DB5-4A18-8C61-E70454094F22}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
