@@ -196,7 +196,7 @@ void initParams(int argc, char** argv)
 	
 	// *** Arg 0 => Programme name
 	// *** Arg 1 => Render
-	string displayType = (argc > 1) ? argv[1] : CENTER_STEREO;
+	string displayType = (argc > 1) ? argv[1] : NORMAL;
 	if (displayType == CENTER) {
 		g_spectrumType = CENTER;
 
