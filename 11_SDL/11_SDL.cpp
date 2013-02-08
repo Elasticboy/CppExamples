@@ -1,7 +1,6 @@
 // 11_SDL.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include "SDL.h"
 
 int wmain(int argc, char* argv[])

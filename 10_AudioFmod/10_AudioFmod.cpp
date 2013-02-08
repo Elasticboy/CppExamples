@@ -1,7 +1,6 @@
 // 10_AudioFmod.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
 #include "fmod.hpp"
 #include <Windows.h>
 #include <iostream>

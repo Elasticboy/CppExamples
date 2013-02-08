@@ -1,8 +1,6 @@
 // 14_Fmod_SFML_Equalizer.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
 #include <SFML/Graphics.hpp>
 #include <fmod.hpp>
 #include <fmod_errors.h>

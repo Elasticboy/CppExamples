@@ -1,8 +1,6 @@
 // 05_MsSpeechApi.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
 #include <sphelper.h>
 #include <sapi.h>
 #include <iostream>
