@@ -7,6 +7,8 @@
 
 using namespace std;
 
+template<typename... Ts> void safe_print(const char* str, const Ts&... ts);
+
 template <typename T> void helperIntegral(T t, true_type)
 {
 	cout << t << " is an integral !" << endl;
@@ -68,8 +70,43 @@ int main()
     cout << is_arithmetic<float*>::value << endl;
 	
     cout << endl; 
+	
+	safe_print("bobob", 123, 122.354, string("qdsf"));
+	//getString("bobob", 123.123);
+	//getString("bobob", "HELLO");
+	//getString("bobob", string("STRING"));
 
 	system("PAUSE");
 	return 0; 
 }
 
+	/** is_arithmetic */
+	template<typename T> typename std::enable_if<std::is_integral<T>::value, long>::type
+	normalizeArg(const T& arg) {
+		cout << "--is_arithmetic" << endl;
+		return arg;
+	}
+	
+	/** is_arithmetic */
+	template<typename T> typename std::enable_if<std::is_floating_point<T>::value, double>::type
+	normalizeArg(const T& arg) {
+		cout << "--is_arithmetic" << endl;
+		return arg;
+	}
+
+	const char* normalizeArg(const string& arg)
+	{
+		return arg.c_str();
+	}
+
+	/** NOT string => fail /
+	template<typename T>
+	std::string helper(const T& arg) {
+		cout << "FAIL" << endl;
+		throw invalid_argument("Translator::getString() does not accept argument type \"" + typeid(T).name() + "\".");
+	}*/
+
+	template<typename... Ts> void safe_print(const char* str, const Ts&... ts)
+	{
+		cout << printf(str, normalizeArg(ts)...) << endl;
+	}
