@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope
+ xmlns:SOAP-ENV="http://www.w3.org/2003/05/soap-envelope"
+ xmlns:SOAP-ENC="http://www.w3.org/2003/05/soap-encoding"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:ns1="http://www.webservicex.net/">
+ <SOAP-ENV:Body>
+  <ns1:GetGeoIPContextResponse>
+   <ns1:GetGeoIPContextResult>
+    <ns1:ReturnCode>0</ns1:ReturnCode>
+    <ns1:IP></ns1:IP>
+    <ns1:ReturnCodeDetails></ns1:ReturnCodeDetails>
+    <ns1:CountryName></ns1:CountryName>
+    <ns1:CountryCode></ns1:CountryCode>
+   </ns1:GetGeoIPContextResult>
+  </ns1:GetGeoIPContextResponse>
+ </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
