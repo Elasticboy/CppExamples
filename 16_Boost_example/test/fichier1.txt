@@ -1,0 +1,73 @@
+qsd;sbfqsbnfqsd;sbfqsbnf
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;qsd;sbfqsbnf
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;qsd;sbfqsbnf
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;qsd;sbfqsbnf
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;qsd;sbfqsbnf
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+qqùsfùqsf 
+sq
+fqùsdfklm,qsf
+qsdf
+ùlms,qf
+sùflm,qsù
+
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;
+			std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;std::cout << "size : " << fs::file_size(rootPath) << std::endl;
