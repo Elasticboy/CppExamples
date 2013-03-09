@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "15_WebService_gSoap", "15_W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "16_Boost_example", "16_Boost_example\16_Boost_example.vcxproj", "{EE583C83-F7D2-4B77-85C7-B07FF6448685}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_WinAPI", "04_WinAPI\04_WinAPI.vcxproj", "{0116B0D6-DC26-4004-A586-311416C9742A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -61,6 +63,10 @@ Global
 		{EE583C83-F7D2-4B77-85C7-B07FF6448685}.Debug|Win32.Build.0 = Debug|Win32
 		{EE583C83-F7D2-4B77-85C7-B07FF6448685}.Release|Win32.ActiveCfg = Release|Win32
 		{EE583C83-F7D2-4B77-85C7-B07FF6448685}.Release|Win32.Build.0 = Release|Win32
+		{0116B0D6-DC26-4004-A586-311416C9742A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0116B0D6-DC26-4004-A586-311416C9742A}.Debug|Win32.Build.0 = Debug|Win32
+		{0116B0D6-DC26-4004-A586-311416C9742A}.Release|Win32.ActiveCfg = Release|Win32
+		{0116B0D6-DC26-4004-A586-311416C9742A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
