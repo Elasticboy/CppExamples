@@ -8,19 +8,16 @@
 
 int regexExample();
 int listFileExample();
+int addPath();
 
 int main()
 {
 	//regexExample();
-
-	try {
-		listFileExample();
-	} catch (const boost::filesystem::filesystem_error& e) {
-		std::cout << e.what() << std::endl;
-	}
+	//listFileExample();
+	int result = addPath();
 
 	system("PAUSE");
-	return EXIT_SUCCESS;
+	return result;
 }
 
 int regexExample()
@@ -48,42 +45,57 @@ int regexExample()
 
 int listFileExample()
 {
-	const bool recursive = false;
-	const std::string root = ".\\test"; 
+	try {
+		const bool recursive = false;
+		const std::string root = ".\\test"; 
 
+		namespace fs = boost::filesystem;
+		fs::path rootPath(root);
 
-	namespace fs = boost::filesystem;
-	fs::path rootPath(root);
-
-	// Throw exception if path doesn't exist or isn't a directory.
-	if (!fs::exists(rootPath)) {
-		throw std::exception("rootPath does not exist.");
-	}
-	if (!fs::is_directory(rootPath)) {
-		throw std::exception("rootPath is not a directory.");
-	}
-
-	fs::directory_iterator end_itr;
-	for( fs::directory_iterator it(rootPath); it != end_itr; ++it) {
-
-		std::cout << it->path()<< std::endl;
-
-		// For a directory
-		if (fs::is_directory(it->status())) {
-			std::cout << "is_directory" << std::endl;
-			if (recursive && it->path().string() != "..") {
-
-			}
-
-		} else if (fs::is_regular_file(it->status())) { // For a regular file
-			std::cout << "is_regular_file" << std::endl;
-			std::cout << "size : " << fs::file_size(it->path()) << "octets" << std::endl;
-
-		} else {
-			std::cout << "is something else !?" << std::endl;
-			// TODO: throw an error
+		// Throw exception if path doesn't exist or isn't a directory.
+		if (!fs::exists(rootPath)) {
+			throw std::exception("rootPath does not exist.");
 		}
+		if (!fs::is_directory(rootPath)) {
+			throw std::exception("rootPath is not a directory.");
+		}
+
+		fs::directory_iterator end_itr;
+		for( fs::directory_iterator it(rootPath); it != end_itr; ++it) {
+
+			std::cout << it->path()<< std::endl;
+
+			// For a directory
+			if (fs::is_directory(it->status())) {
+				std::cout << "is_directory" << std::endl;
+				if (recursive && it->path().string() != "..") {
+
+				}
+
+			} else if (fs::is_regular_file(it->status())) { // For a regular file
+				std::cout << "is_regular_file" << std::endl;
+				std::cout << "size : " << fs::file_size(it->path()) << "octets" << std::endl;
+
+			} else {
+				std::cout << "is something else !?" << std::endl;
+				// TODO: throw an error
+			}
+		}
+		return EXIT_SUCCESS;
+
+	} catch (const boost::filesystem::filesystem_error& e) {
+		std::cout << e.what() << std::endl;
+		return EXIT_FAILURE;
 	}
+}
+
+int addPath()
+{
+	auto path1 = boost::filesystem::path("..\\..\\hello");
+	auto path2 = boost::filesystem::path("./my/world/");
+	
+	auto path3 = path1.string() + path2.string();
+	std::cout << path3 << std::endl;
 
 	return EXIT_SUCCESS;
 }
