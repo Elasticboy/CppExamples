@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "16_Boost_example", "16_Boos
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_WinAPI", "04_WinAPI\04_WinAPI.vcxproj", "{0116B0D6-DC26-4004-A586-311416C9742A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_FileIO", "01_FileIO\01_FileIO.vcxproj", "{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -67,6 +69,10 @@ Global
 		{0116B0D6-DC26-4004-A586-311416C9742A}.Debug|Win32.Build.0 = Debug|Win32
 		{0116B0D6-DC26-4004-A586-311416C9742A}.Release|Win32.ActiveCfg = Release|Win32
 		{0116B0D6-DC26-4004-A586-311416C9742A}.Release|Win32.Build.0 = Release|Win32
+		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Debug|Win32.Build.0 = Debug|Win32
+		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Release|Win32.ActiveCfg = Release|Win32
+		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
