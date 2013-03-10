@@ -86,9 +86,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="05_MsSpeechApi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -85,9 +85,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="09_Templates.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
