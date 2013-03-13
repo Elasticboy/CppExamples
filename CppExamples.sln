@@ -23,6 +23,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04_WinAPI", "04_WinAPI\04_W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_FileIO", "01_FileIO\01_FileIO.vcxproj", "{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "17_ThreadSafe", "17_ThreadSafe\17_ThreadSafe.vcxproj", "{A7A80784-5066-44CA-B59A-00985C939122}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "18_HotKeys", "18_HotKeys\18_HotKeys.vcxproj", "{404F3B8D-AE70-443A-80AA-44CCFBA65B79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -73,6 +77,14 @@ Global
 		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Debug|Win32.Build.0 = Debug|Win32
 		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Release|Win32.ActiveCfg = Release|Win32
 		{C86ABB87-75CF-47AE-9FFC-D9808E0DAB8E}.Release|Win32.Build.0 = Release|Win32
+		{A7A80784-5066-44CA-B59A-00985C939122}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A7A80784-5066-44CA-B59A-00985C939122}.Debug|Win32.Build.0 = Debug|Win32
+		{A7A80784-5066-44CA-B59A-00985C939122}.Release|Win32.ActiveCfg = Release|Win32
+		{A7A80784-5066-44CA-B59A-00985C939122}.Release|Win32.Build.0 = Release|Win32
+		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Debug|Win32.Build.0 = Debug|Win32
+		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Release|Win32.ActiveCfg = Release|Win32
+		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
