@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "17_ThreadSafe", "17_ThreadS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "18_HotKeys", "18_HotKeys\18_HotKeys.vcxproj", "{404F3B8D-AE70-443A-80AA-44CCFBA65B79}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "19_socket", "19_socket\19_socket.vcxproj", "{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -85,6 +87,10 @@ Global
 		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Debug|Win32.Build.0 = Debug|Win32
 		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Release|Win32.ActiveCfg = Release|Win32
 		{404F3B8D-AE70-443A-80AA-44CCFBA65B79}.Release|Win32.Build.0 = Release|Win32
+		{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}.Debug|Win32.Build.0 = Debug|Win32
+		{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}.Release|Win32.ActiveCfg = Release|Win32
+		{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
