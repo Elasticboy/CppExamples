@@ -1,15 +1,15 @@
 // 15_WebService_gSoap.cpp : Defines the entry point for the console application.
 //
-#include "gsoap\stdsoap2.h"
-#include "gsoap\soapStub.h" // obtain the generated stub  
-#include "gsoap\GeoIPServiceSoap.nsmap" // obtain the generated XML namespace mapping table for the GeoIPServiceSoap service  
+//#include "gsoap\stdsoap2.h"
+//#include "gsoap\soapStub.h" // obtain the generated stub  
+//#include "gsoap\GeoIPServiceSoap.nsmap" // obtain the generated XML namespace mapping table for the GeoIPServiceSoap service  
 
-struct Namespace *v_namespaces;
+//struct Namespace *v_namespaces;
 
 int main(int argc, char** argv)
 {
-	struct soap soap;
-	soap_init(&soap);
+	//struct soap soap;
+	//soap_init(&soap);
 	/*
 	_ns1__GetGeoIP geoIp;
 	geoIp.IPAddress->assign("217.154.243.205");
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 	soap_done(&soap); // detach the gSOAP context
 	*/
 
-	system("PAUSE");
+	//system("PAUSE");
 	return 0;
 }
 

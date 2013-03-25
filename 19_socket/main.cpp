@@ -69,9 +69,9 @@ int receive(const unsigned short& port)
 
 	tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
 	tcp::socket listenerSocket(io_service);
-	acceptor.accept((listenerSocket);
+	acceptor.accept(listenerSocket);
 
-	io_service.
+//	io_service.
 	readbuf.resize(HEADER_SIZE + 4096);
 	asio::read(listenerSocket, asio::buffer(readbuf));
 
