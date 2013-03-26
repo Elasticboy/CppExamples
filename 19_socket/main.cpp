@@ -4,25 +4,68 @@
 #include <string>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+int boost_async_timer();
 
 std::string hostname();
 std::string ip_address();
 int receive(const unsigned short& port);
 
 bool continueToListen = true;
+
 int main()
 {
+	boost_async_timer();
+	/*
 	unsigned short port = 9080;
 
 	while (continueToListen) {
-		std::cout << "Server Info : " << std::endl;
-		std::cout << " - Hostname   : " << hostname()	<< std::endl;
-		std::cout << " - IP Address : " << ip_address()	<< std::endl;
-		std::cout << " - Open port  : " << std::to_string(port) << std::endl;
-		std::cout << "Waiting for client to connect..." << std::endl;
+	std::cout << "Server Info : " << std::endl;
+	std::cout << " - Hostname   : " << hostname()	<< std::endl;
+	std::cout << " - IP Address : " << ip_address()	<< std::endl;
+	std::cout << " - Open port  : " << std::to_string(port) << std::endl;
+	std::cout << "Waiting for client to connect..." << std::endl;
 
-		receive(port);
+	receive(port);
 	}
+	*/
+	system("PAUSE");
+
+	return EXIT_SUCCESS;
+}
+
+
+void print(const boost::system::error_code& /*e*/, boost::asio::deadline_timer* timer, int* count)
+{
+	if (*count < 5) {
+		std::cout << *count << std::endl;
+		++(*count);
+
+		// Add 1 second to the expiration date
+		timer->expires_at(timer->expires_at() + boost::posix_time::seconds(1));
+
+		auto callback = boost::bind(print, boost::asio::placeholders::error, timer, count);
+		timer->async_wait(callback);
+	}
+}
+
+int boost_async_timer()
+{
+	boost::asio::io_service io;
+
+	int count = 0;
+	// Create a 1 second timer
+	boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
+
+	auto callback = boost::bind(print, boost::asio::placeholders::error, &timer, &count);
+	timer.async_wait(callback);
+
+	io.run();
+
+	std::cout << "Final count is " << count << "\n";
+
+	return 0;
 }
 
 std::string hostname()
@@ -71,7 +114,7 @@ int receive(const unsigned short& port)
 	tcp::socket listenerSocket(io_service);
 	acceptor.accept(listenerSocket);
 
-//	io_service.
+	//	io_service.
 	readbuf.resize(HEADER_SIZE + 4096);
 	asio::read(listenerSocket, asio::buffer(readbuf));
 
