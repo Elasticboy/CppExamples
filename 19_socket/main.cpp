@@ -7,6 +7,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 int boost_async_timer();
+int boost_run_server(const unsigned short& port);
 
 std::string hostname();
 std::string ip_address();
@@ -17,6 +18,7 @@ bool continueToListen = true;
 int main()
 {
 	boost_async_timer();
+	boost_run_server(9080);
 	/*
 	unsigned short port = 9080;
 
@@ -35,7 +37,9 @@ int main()
 	return EXIT_SUCCESS;
 }
 
-
+/* ***************************************************** */
+/* ***              Boost Async Timer                *** */
+/* ***************************************************** */
 void print(const boost::system::error_code& /*e*/, boost::asio::deadline_timer* timer, int* count)
 {
 	if (*count < 5) {
@@ -63,10 +67,51 @@ int boost_async_timer()
 
 	io.run();
 
-	std::cout << "Final count is " << count << "\n";
+	std::cout << "Final count is " << count << std::endl;
 
 	return 0;
 }
+
+/* ***************************************************** */
+/* ***                 Boost Server                  *** */
+/* ***************************************************** */
+std::string make_daytime_string()
+{
+	std::time_t now = std::time(0);
+	return std::ctime(&now);
+}
+
+int boost_run_server(const unsigned short& port)
+{
+	try {
+		boost::asio::io_service io_service;
+
+		using boost::asio::ip::tcp;
+		tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
+
+		for (;;) {
+			tcp::socket socket(io_service);
+
+			std::cout << "Waiting for client..." << std::endl;
+			acceptor.accept(socket);
+
+			std::string message = make_daytime_string();
+			std::cout << " -> Responding to client : " << message << std::endl;
+			boost::system::error_code ignored_error;
+			boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
+		}
+
+	} catch (std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
+	return 0;
+}
+
+
+/* ***************************************************** */
+/* ***                   Other                       *** */
+/* ***************************************************** */
 
 std::string hostname()
 {
