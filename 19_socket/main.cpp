@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -13,12 +12,77 @@ std::string hostname();
 std::string ip_address();
 int receive(const unsigned short& port);
 
-bool continueToListen = true;
-
 int main()
 {
-	boost_async_timer();
-	boost_run_server(9080);
+	bool exitLoop = false;
+
+	std::cout << "/**********************************/" << std::endl;
+	std::cout << "/*** Welcome to Socket Project. ***/" << std::endl;
+	std::cout << "/**********************************/" << std::endl;
+	std::cout << std::endl;
+
+	while (!exitLoop) {
+		std::cout << "Please, choose an item in the menu :" << std::endl;
+		std::cout << "  1. Async Timer"	<< std::endl;
+		std::cout << "  2. Hostname"	<< std::endl;
+		std::cout << "  3. Ip Adress"	<< std::endl;
+		std::cout << "  4. Client"		<< std::endl;
+		std::cout << "  5. Server"		<< std::endl;
+		std::cout << "  6. Exit"		<< std::endl;
+		std::cout << std::endl;
+
+		// Wait for client to make a choice.
+		std::cout << "Enter a number : ";
+		std::string userInput;
+		std::cin >> userInput;
+		std::cout << std::endl;
+
+		// Transform userInput into exploitable value
+		int menuItem = 0;
+		try { 
+			menuItem = std::stoi(userInput);
+		} catch (const std::exception&) {
+			std::cout << "'" <<userInput << "' is not a number." << std::endl;
+			std::cout << std::endl;
+			continue;
+		}
+
+		switch (menuItem) {
+
+		case 1 : // Async Timer
+			std::cout << "Launching 'Async Timer'." << std::endl;
+			boost_async_timer();
+			break;
+
+		case 2 : // Hostname
+			std::cout << "Your hostname is '" << hostname() << "'" << std::endl;
+			break;
+
+		case 3 : // Ip Adress
+			std::cout << "Your ip adress is '" << ip_address() << "'" << std::endl;
+			break;
+
+		case 4 : // Client
+			std::cout << "You have chosen 'Client'." << std::endl;
+			break;
+
+		case 5 : // Server
+			std::cout << "You have chosen 'Server'." << std::endl;
+			//boost_run_server(9080);
+			break;
+
+		case 6 : // Exit
+			std::cout << "Closing the application..." << std::endl;
+			exitLoop = true;
+			break;
+
+		default :
+			std::cout << "'" <<menuItem << "' is not a suitable value." << std::endl;
+		}
+
+		std::cout << std::endl;
+	}
+
 	/*
 	unsigned short port = 9080;
 
