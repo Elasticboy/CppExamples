@@ -171,10 +171,6 @@ int boost_async_timer()
 /* ***************************************************** */
 /* ***                 Boost Client                  *** */
 /* ***************************************************** */
-class tcp_client {
-	// TODO: write tcp_client class
-};
-
 int boost_run_client()
 {
 	return 0;
@@ -183,9 +179,6 @@ int boost_run_client()
 /* ***************************************************** */
 /* ***                 Boost Server                  *** */
 /* ***************************************************** */
-class tcp_server {
-	// TODO: write tcp_server class
-};
 
 std::string make_daytime_string()
 {
