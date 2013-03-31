@@ -83,11 +83,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="io_service_pool.cpp" />
+    <ClCompile Include="req_handler.cpp" />
     <ClCompile Include="tcp_client.cpp" />
+    <ClCompile Include="tcp_connection.cpp" />
     <ClCompile Include="tcp_server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="io_service_pool.h" />
+    <ClInclude Include="req_handler.h" />
     <ClInclude Include="tcp_client.h" />
+    <ClInclude Include="tcp_connection.h" />
     <ClInclude Include="tcp_server.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

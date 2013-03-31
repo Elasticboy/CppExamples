@@ -4,6 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "tcp_server.h"
 
 void display_header();
 void display_menu();
@@ -11,7 +12,7 @@ int get_user_input();
 
 int boost_async_timer();
 int boost_run_client();
-int boost_run_server(const unsigned short& port);
+int boost_run_server();
 std::string hostname();
 std::string ip_address();
 int receive(const unsigned short& port);
@@ -26,7 +27,7 @@ int main()
 
 		display_menu();
 
-		
+
 		int menuItem;
 		try {
 			menuItem = get_user_input();
@@ -55,7 +56,7 @@ int main()
 
 		case 5 : // Server
 			std::cout << "You have chosen 'Server'." << std::endl;
-			//boost_run_server(9080);
+			boost_run_server();
 			break;
 
 		case 6 : // Exit
@@ -186,25 +187,28 @@ std::string make_daytime_string()
 	return std::ctime(&now);
 }
 
-int boost_run_server(const unsigned short& port)
+int boost_run_server()
 {
+	std::cout << "Enter an ip address : ";
+	std::string ip_address;
+	std::cin >> ip_address;
+
+	std::cout << "Enter a port : ";
+	std::string port;
+	std::cin >> port;
+
+	std::cout << "Enter thread count : ";
+	std::string thread_count;
+	std::cin >> thread_count;
+
 	try {
-		boost::asio::io_service io_service;
+		
+		// Initialise the server.
+		const std::size_t pool_size = boost::lexical_cast<std::size_t>(thread_count);
+		auto server = tcp_server(ip_address, port, pool_size);
 
-		using boost::asio::ip::tcp;
-		tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
-
-		for (;;) {
-			tcp::socket socket(io_service);
-
-			std::cout << "Waiting for client..." << std::endl;
-			acceptor.accept(socket);
-
-			std::string message = make_daytime_string();
-			std::cout << " -> Responding to client : " << message << std::endl;
-			boost::system::error_code ignored_error;
-			boost::asio::write(socket, boost::asio::buffer(message), ignored_error);
-		}
+		// Run the server until stopped.
+		server.run();
 
 	} catch (std::exception& e) {
 		std::cerr << e.what() << std::endl;

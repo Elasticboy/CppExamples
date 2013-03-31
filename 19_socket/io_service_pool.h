@@ -1,9 +1,10 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
+
 
 class io_service_pool : private boost::noncopyable
 {
@@ -20,11 +21,11 @@ public:
 	boost::asio::io_service& get_io_service();
 
 private:
-  typedef std::shared_ptr<boost::asio::io_service> io_service_ptr;
-  typedef std::shared_ptr<boost::asio::io_service::work> work_ptr;
+  typedef boost::shared_ptr<boost::asio::io_service> io_service_ptr;
+  typedef boost::shared_ptr<boost::asio::io_service::work> work_ptr;
 
 	/// The pool of io_services.
-  std::vector<io_service_ptr> io_services_;
+	std::vector<io_service_ptr> io_services_;
 
 	/// The work that keeps the io_services running.
 	std::vector<work_ptr> work_;
