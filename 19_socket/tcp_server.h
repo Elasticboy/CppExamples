@@ -12,9 +12,9 @@ class tcp_server : private boost::noncopyable
 public:
 	/// Construct the server to listen on the specified TCP address and port, and
 	/// serve up files from the given directory.
-	explicit tcp_server(const std::string& ip_address, const std::string& port, std::size_t pool_size);
+	explicit tcp_server(const unsigned short& port, std::size_t pool_size);
 
-	/** Run the server's io_service loop. */
+	/// Run the server's io_service loop.
 	void run();
 
 private:

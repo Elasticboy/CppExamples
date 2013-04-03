@@ -2,10 +2,13 @@
 
 #include <boost/bind.hpp>
 
-tcp_server::tcp_server(const std::string& ip_address, const std::string& port, std::size_t pool_size)
+typedef boost::asio::ip::tcp tcp;
+
+tcp_server::tcp_server(const unsigned short& port, std::size_t pool_size)
 	: io_service_pool_(pool_size),
 	signals_(io_service_pool_.get_io_service()),
-	acceptor_(io_service_pool_.get_io_service())
+	acceptor_(io_service_pool_.get_io_service()),
+	new_connection_()
 {
 	// Register to handle the signals that indicate when the server should exit.
 	// It is safe to register for the same signal multiple times in a program,
@@ -16,6 +19,15 @@ tcp_server::tcp_server(const std::string& ip_address, const std::string& port, s
 	signals_.add(SIGQUIT);
 #endif // defined(SIGQUIT)
 	signals_.async_wait(boost::bind(&tcp_server::handle_stop, this));
+
+	// Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
+	tcp::endpoint endpoint(tcp::v4(), port);
+	acceptor_.open(endpoint.protocol());
+	acceptor_.set_option(tcp::acceptor::reuse_address(true));
+	acceptor_.bind(endpoint);
+	acceptor_.listen();
+
+	start_accept();
 }
 
 void tcp_server::run()
@@ -34,11 +46,11 @@ void tcp_server::start_accept()
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(&tcp_server::handle_accept, this, boost::asio::placeholders::error));
 }
 
-void tcp_server::handle_accept(const boost::system::error_code& e)
+void tcp_server::handle_accept(const boost::system::error_code& error)
 {
-	if (!e) {
+	if (!error) {
 		new_connection_->start();
 	}
-
+	
 	start_accept();
 }

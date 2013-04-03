@@ -1,15 +1,14 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
 #include "req_handler.h"
 
 class tcp_connection
-	: public boost::enable_shared_from_this<tcp_connection>,
-    private boost::noncopyable
+	: public std::enable_shared_from_this<tcp_connection>,
+	private boost::noncopyable
 {
 public:
 	/// Construct a connection with the given io_service.
@@ -32,10 +31,10 @@ private:
 	char buffer_[4096];
 
 	/// The incoming request.
-	std::string request_;
+	boost::asio::streambuf request_;
 
 	/// The reply to be sent back to the client.
-	std::string reply_;
+	std::string response_;
 
 	/// Handle completion of a read operation.
 	void handle_read(const boost::system::error_code& e, std::size_t bytes_transferred);

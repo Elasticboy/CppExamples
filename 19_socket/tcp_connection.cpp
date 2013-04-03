@@ -1,5 +1,6 @@
 #include "tcp_connection.h"
 
+#include <istream>
 #include <boost/bind.hpp>
 
 tcp_connection::tcp_connection(boost::asio::io_service& io_service, request_handler& handler)
@@ -16,11 +17,14 @@ void tcp_connection::start()
 		boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-void tcp_connection::handle_read(const boost::system::error_code& e, std::size_t bytes_transferred)
+void tcp_connection::handle_read(const boost::system::error_code& error, std::size_t bytes_transferred)
 {
-	if (!e)	{
-		request_handler_.handle_request(request_, reply_);
-		boost::asio::async_write(socket_, boost::asio::buffer(reply_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error));
+	if (!error)	{
+
+		double size = bytes_transferred;
+		auto request = std::string(buffer_, size);
+		request_handler_.handle_request(request, response_);
+		boost::asio::async_write(socket_, boost::asio::buffer(response_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error));
 	}
 
 	// If an error occurs then no new asynchronous operations are started. This
@@ -29,9 +33,9 @@ void tcp_connection::handle_read(const boost::system::error_code& e, std::size_t
 	// handler returns. The connection class's destructor closes the socket.
 }
 
-void tcp_connection::handle_write(const boost::system::error_code& e)
+void tcp_connection::handle_write(const boost::system::error_code& error)
 {
-	if (!e) {
+	if (!error) {
 		// Initiate graceful connection closure.
 		boost::system::error_code ignored_ec;
 		socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, ignored_ec);

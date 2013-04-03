@@ -20,11 +20,10 @@ int receive(const unsigned short& port);
 
 const int mi_async_timer	= 1; // Async Timer 
 const int mi_hostname		= 2; // Hostname
-const int mi_ip_address		= 3; // Ip Adress
+const int mi_ip_address		= 3; // Ip Address
 const int mi_client			= 4; // Client
 const int mi_server			= 5; // Server
 const int mi_exit			= 6; // Exit
-
 
 int main()
 {
@@ -54,12 +53,13 @@ int main()
 			std::cout << "Your hostname is '" << hostname() << "'" << std::endl;
 			break;
 
-		case mi_ip_address : // Ip Adress
+		case mi_ip_address : // Ip Address
 			std::cout << "Your ip address is '" << ip_address() << "'" << std::endl;
 			break;
 
 		case mi_client : // Client
 			std::cout << "You have chosen 'Client'." << std::endl;
+			boost_run_client();
 			break;
 
 		case mi_server : // Server
@@ -79,19 +79,6 @@ int main()
 		std::cout << std::endl;
 	}
 
-	/*
-	unsigned short port = 9080;
-
-	while (continueToListen) {
-	std::cout << "Server Info : " << std::endl;
-	std::cout << " - Hostname   : " << hostname()	<< std::endl;
-	std::cout << " - IP Address : " << ip_address()	<< std::endl;
-	std::cout << " - Open port  : " << std::to_string(port) << std::endl;
-	std::cout << "Waiting for client to connect..." << std::endl;
-
-	receive(port);
-	}
-	*/
 	system("PAUSE");
 
 	return EXIT_SUCCESS;
@@ -182,12 +169,17 @@ int boost_async_timer()
 /* ***************************************************** */
 int boost_run_client()
 {
-	const std::string server	= "server";
-	const std::string path		= "path";
+	std::cout << "Host (ip address or hostname) : ";
+	std::string host;
+	std::cin >> host;
+	
+	std::cout << "Service (port or service name) : ";
+	std::string service;
+	std::cin >> service;
 
 	try {
 		boost::asio::io_service io_service;
-		tcp_client client(io_service, server, path);
+		tcp_client client(io_service, host, service);
 		io_service.run();
 
 	} catch (const std::exception& e) {
@@ -209,13 +201,10 @@ std::string make_daytime_string()
 
 int boost_run_server()
 {
-	std::cout << "Enter an ip address : ";
-	std::string ip_address;
-	std::cin >> ip_address;
 
 	std::cout << "Enter a port : ";
-	std::string port;
-	std::cin >> port;
+	std::string port_str;
+	std::cin >> port_str;
 
 	std::cout << "Enter thread count : ";
 	std::string thread_count;
@@ -224,8 +213,9 @@ int boost_run_server()
 	try {
 
 		// Initialise the server.
-		const std::size_t pool_size = boost::lexical_cast<std::size_t>(thread_count);
-		tcp_server server(ip_address, port, pool_size);
+		const auto port = std::stoi(port_str);
+		const auto pool_size = boost::lexical_cast<std::size_t>(thread_count);
+		tcp_server server(port, pool_size);
 
 		// Run the server until stopped.
 		server.run();
@@ -256,43 +246,4 @@ std::string hostname()
 std::string ip_address()
 {
 	return "127.0.0.1";
-}
-
-int receive(const unsigned short& port)
-{
-	/*
-	string_utils::clear_buffer(buffer);
-
-	int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
-	m_log.debug("  -- result : " + received);
-
-	SerializedExchange exchange;
-	exchange.buffer = buffer;
-	exchange.bufferSize = received;
-
-	handleMessage(exchange);
-
-	closesocket(m_cSocket);
-	m_log.debug("Socket closed.");
-	*/
-	const int HEADER_SIZE = 4;
-
-	using boost::asio::ip::tcp;
-	namespace asio = boost::asio;
-	using boost::uint8_t;
-
-	asio::io_service io_service;
-	std::vector<uint8_t> readbuf;
-
-	tcp::acceptor acceptor(io_service, tcp::endpoint(tcp::v4(), port));
-	tcp::socket listenerSocket(io_service);
-	acceptor.accept(listenerSocket);
-
-	//	io_service.
-	readbuf.resize(HEADER_SIZE + 4096);
-	asio::read(listenerSocket, asio::buffer(readbuf));
-
-	io_service.run();
-
-	return 1;
 }
