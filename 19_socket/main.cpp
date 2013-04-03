@@ -4,6 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "tcp_client.h"
 #include "tcp_server.h"
 
 void display_header();
@@ -17,6 +18,14 @@ std::string hostname();
 std::string ip_address();
 int receive(const unsigned short& port);
 
+const int mi_async_timer	= 1; // Async Timer 
+const int mi_hostname		= 2; // Hostname
+const int mi_ip_address		= 3; // Ip Adress
+const int mi_client			= 4; // Client
+const int mi_server			= 5; // Server
+const int mi_exit			= 6; // Exit
+
+
 int main()
 {
 	bool exitLoop = false;
@@ -27,7 +36,6 @@ int main()
 
 		display_menu();
 
-
 		int menuItem;
 		try {
 			menuItem = get_user_input();
@@ -37,29 +45,29 @@ int main()
 
 		switch (menuItem) {
 
-		case 1 : // Async Timer
+		case mi_async_timer : // Async Timer
 			std::cout << "Launching 'Async Timer'..." << std::endl;
 			boost_async_timer();
 			break;
 
-		case 2 : // Hostname
+		case mi_hostname : // Hostname
 			std::cout << "Your hostname is '" << hostname() << "'" << std::endl;
 			break;
 
-		case 3 : // Ip Adress
+		case mi_ip_address : // Ip Adress
 			std::cout << "Your ip address is '" << ip_address() << "'" << std::endl;
 			break;
 
-		case 4 : // Client
+		case mi_client : // Client
 			std::cout << "You have chosen 'Client'." << std::endl;
 			break;
 
-		case 5 : // Server
+		case mi_server : // Server
 			std::cout << "You have chosen 'Server'." << std::endl;
 			boost_run_server();
 			break;
 
-		case 6 : // Exit
+		case mi_exit : // Exit
 			std::cout << "Closing the application..." << std::endl;
 			exitLoop = true;
 			break;
@@ -174,7 +182,19 @@ int boost_async_timer()
 /* ***************************************************** */
 int boost_run_client()
 {
-	return 0;
+	const std::string server	= "server";
+	const std::string path		= "path";
+
+	try {
+		boost::asio::io_service io_service;
+		tcp_client client(io_service, server, path);
+		io_service.run();
+
+	} catch (const std::exception& e) {
+		std::cout << "Exception: " << e.what() << "\n";
+	}
+
+	return 0;;
 }
 
 /* ***************************************************** */
@@ -202,10 +222,10 @@ int boost_run_server()
 	std::cin >> thread_count;
 
 	try {
-		
+
 		// Initialise the server.
 		const std::size_t pool_size = boost::lexical_cast<std::size_t>(thread_count);
-		auto server = tcp_server(ip_address, port, pool_size);
+		tcp_server server(ip_address, port, pool_size);
 
 		// Run the server until stopped.
 		server.run();
