@@ -30,7 +30,7 @@ void io_service_pool::run()
 
 	for (std::size_t i = 0; i < io_services_.size(); ++i) {
 
-		auto thread = std::make_shared<std::thread>(std::thread(run_ptr, io_services_[i])); 
+		auto thread = std::make_shared<std::thread>(run_ptr, io_services_[i]); 
 		threads.push_back(std::move(thread));
 	}
 
