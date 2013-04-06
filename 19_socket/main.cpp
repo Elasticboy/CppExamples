@@ -186,7 +186,7 @@ int boost_run_client()
 		std::cout << "Exception: " << e.what() << "\n";
 	}
 
-	return 0;;
+	return 0;
 }
 
 /* ***************************************************** */
