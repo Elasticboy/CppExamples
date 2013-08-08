@@ -18,8 +18,46 @@ int main()
 	// Program does not even reach this point if const not initialized
 	//std::cout << uninitialized_global_const << std::endl;
 
-	int y = 10;
-	std::cout << y << std::endl;
+	int x(10);
+	std::cout << x << std::endl;
+	
+	std::cout << std::endl;
+	std::cout << "References" << std::endl;
+	
+	int* y(&x); // pointer to x
+	int& z(x); // reference to x
+
+	x++;
+	std::cout << "x++" << std::endl;
+	std::cout << "x : " << x << std::endl;
+	std::cout << "*y : " << *y << std::endl;
+	std::cout << "z : " << z << std::endl;
+	
+	std::cout << std::endl;
+
+	(*y)++;
+	std::cout << "(*y)++" << std::endl;
+	std::cout << "x : " << x << std::endl;
+	std::cout << "*y : " << *y << std::endl;
+	std::cout << "z : " << z << std::endl;
+	
+	std::cout << std::endl;
+
+	z++;
+	std::cout << "z++" << std::endl;
+	std::cout << "x : " << x << std::endl;
+	std::cout << "*y : " << *y << std::endl;
+	std::cout << "z : " << z << std::endl;
+
+	std::cout << std::endl;
+
+	int w(z); // Copy of the value
+	z++;
+	std::cout << "z++" << std::endl;
+	std::cout << "w : " << w << std::endl;
+	std::cout << "x : " << x << std::endl;
+	std::cout << "*y : " << *y << std::endl;
+	std::cout << "z : " << z << std::endl;
 
 	system("PAUSE");
 
