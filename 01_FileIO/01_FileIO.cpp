@@ -1,5 +1,6 @@
 // 01_FileIO.cpp : Defines the entry point for the console application.
 #include <iostream>
+#include <string>
 
 int uninitialized_global;
 
@@ -58,6 +59,19 @@ int main()
 	std::cout << "x : " << x << std::endl;
 	std::cout << "*y : " << *y << std::endl;
 	std::cout << "z : " << z << std::endl;
+	
+	
+	std::cout << std::endl << "Pi : ";
+	double pi(-1.0);
+	std::cin >> pi;
+
+	std::cin.ignore(); // Mandatory before calling getline()
+
+	std::cout << std::endl << "Tell me your name : ";
+	std::string name("My Name");
+	//std::cin >> name; // cin does not like spaces
+	getline(std::cin, name);
+	std::cout << "Name : " << name << std::endl;
 
 	system("PAUSE");
 
