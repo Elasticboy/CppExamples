@@ -5,10 +5,16 @@ public:
 	Shape() {
 		std::cout << "Building Shape" << std::endl;
 	}
+
+	virtual ~Shape() {
+		std::cout << "Shape destructor" << std::endl;
+	}
+
 	void draw() {
 		std::cout << "Shape::draw" << std::endl;
 		do_draw();
 	}
+
 	virtual void virtual_draw() = 0;
 
 private:

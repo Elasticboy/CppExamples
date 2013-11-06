@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20827.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "12_OpenGL", "12_OpenGL\12_OpenGL.vcxproj", "{4258B29D-D45D-4060-AEFA-BFB463AD7F82}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "10_AudioFmod", "10_AudioFmod\10_AudioFmod.vcxproj", "{FBBA23AC-7C8B-4EF1-B66B-0CA9EAB2062E}"
@@ -30,6 +32,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "19_socket", "19_socket\19_socket.vcxproj", "{49F6A6E3-BD4A-4E2A-9375-3B5F75C0989F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "06_Virtual_function", "06_Virtual_function\06_Virtual_function.vcxproj", "{2759F129-4E5E-468B-87E0-D04CC4BC52C6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_Shared_Pointer", "02_Shared_Pointer\02_Shared_Pointer.vcxproj", "{84C2507E-C992-407E-A726-3BDC8A8424C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,10 @@ Global
 		{2759F129-4E5E-468B-87E0-D04CC4BC52C6}.Debug|Win32.Build.0 = Debug|Win32
 		{2759F129-4E5E-468B-87E0-D04CC4BC52C6}.Release|Win32.ActiveCfg = Release|Win32
 		{2759F129-4E5E-468B-87E0-D04CC4BC52C6}.Release|Win32.Build.0 = Release|Win32
+		{84C2507E-C992-407E-A726-3BDC8A8424C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{84C2507E-C992-407E-A726-3BDC8A8424C2}.Debug|Win32.Build.0 = Debug|Win32
+		{84C2507E-C992-407E-A726-3BDC8A8424C2}.Release|Win32.ActiveCfg = Release|Win32
+		{84C2507E-C992-407E-A726-3BDC8A8424C2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
